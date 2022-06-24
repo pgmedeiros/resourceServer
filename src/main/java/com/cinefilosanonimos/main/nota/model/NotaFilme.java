@@ -14,4 +14,5 @@ public class NotaFilme {
     private Usuario usuario;
     @ManyToOne
     private Filme filme;
+    private Double nota;
 }

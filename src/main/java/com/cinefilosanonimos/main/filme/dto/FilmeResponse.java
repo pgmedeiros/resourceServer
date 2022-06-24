@@ -13,5 +13,6 @@ public class FilmeResponse implements Serializable {
 
     public String title;
     public List<ComentarioFilme> comentarioFilmeList;
+    public Double nota;
 
 }
