@@ -1,18 +1,11 @@
 package com.cinefilosanonimos.main.filme.dto;
 
-import com.cinefilosanonimos.main.comentario.model.ComentarioFilme;
-import lombok.Builder;
-import lombok.Data;
+import com.cinefilosanonimos.main.filme.model.Filme;
 
-import java.io.Serializable;
-import java.util.List;
+public record FilmeResponse(String title, Double nota) {
 
-@Data
-@Builder
-public class FilmeResponse implements Serializable {
-
-    public String title;
-    public List<ComentarioFilme> comentarioFilmeList;
-    public Double nota;
+    public static FilmeResponse of(Filme filme) {
+        return new FilmeResponse(filme.getTitle(), filme.getNota());
+    }
 
 }
