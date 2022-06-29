@@ -4,48 +4,51 @@ import com.cinefilosanonimos.main.comentario.repository.ComentarioRepository;
 import com.cinefilosanonimos.main.filme.model.Filme;
 import com.cinefilosanonimos.main.filme.repository.FilmeRepository;
 import com.cinefilosanonimos.main.omdb.dto.OmdbResponse;
-import com.cinefilosanonimos.main.omdb.service.OmdbClient;
+import com.cinefilosanonimos.main.omdb.service.OmdbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class FilmeService {
 
     @Autowired
-    private OmdbClient omdbClient;
+    private OmdbService omdbService;
     @Autowired
     private ComentarioRepository comentarioRepository;
     @Autowired
     private FilmeRepository filmeRepository;
 
-    public Filme buscarFilme(String title) {
-        OmdbResponse retornoOmdb = omdbClient.getMovie(title);
-        if(Objects.isNull(retornoOmdb.getImdbID())) {
-            return filmeNaoEncontrado();
-        }
-        if (filmeRepository.findByImdbId(retornoOmdb.getImdbID()).isPresent()) {
-            return filmeRepository.findByImdbId(retornoOmdb.getImdbID()).get();
-        }
-        return salvaFilmeNovaBusca(retornoOmdb);
+    public Filme buscarFilmePorTitulo(String title) {
+        var retornoOmdbApi = omdbService.buscarFilmeOmdbApi(title);
+        verificaExistenciaFilmeOmdbApi(retornoOmdbApi);
+        var retornoBasePropria = buscarFilmePropriaBaseDeDados(title);
+        return retornoBasePropria
+                .orElse(salvarRetornoOmdbApiEmBasePropria(retornoOmdbApi));
     }
 
-    public Filme getFilmePropriaBaseDeDados(String id) {
-        return filmeRepository.findByImdbId(id).get();
+    public Optional<Filme> buscarFilmePropriaBaseDeDados(String id) {
+        return filmeRepository.findByImdbId(id);
     }
 
-    private Filme salvaFilmeNovaBusca(OmdbResponse omdbResponse) {
-        var filme = new Filme();
-        filme.setTitle(omdbResponse.getTitle());
-        filme.setImdbId(omdbResponse.getImdbID());
+    private Filme salvarRetornoOmdbApiEmBasePropria(OmdbResponse omdbResponse) {
+        var filme = Filme.builder()
+                .title(omdbResponse.getTitle())
+                .imdbId(omdbResponse.getImdbID())
+                .build();
         filmeRepository.save(filme);
         return filme;
     }
 
-    private Filme filmeNaoEncontrado() {
-        var filme = new Filme();
-        filme.setTitle("NAO ENCONTRADO NAO ENCONTRADO");
-        return filme;
+    private void verificaExistenciaFilmeOmdbApi(OmdbResponse retornoOmdbApi) {
+        if (Objects.isNull(retornoOmdbApi.getImdbID())) {
+            throw new RuntimeException("FILME INEXISTENTE");
+        }
+    }
+
+    public void adicionarNotaPositiva(String id) {
+        var retornoBasePropria = buscarFilmePropriaBaseDeDados(id);
     }
 }

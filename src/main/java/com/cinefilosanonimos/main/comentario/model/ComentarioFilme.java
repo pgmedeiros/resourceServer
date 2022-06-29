@@ -1,6 +1,6 @@
 package com.cinefilosanonimos.main.comentario.model;
 
-import com.cinefilosanonimos.main.usuario.model.Usuario;
+import com.cinefilosanonimos.main.autenticacao.Usuario;
 import lombok.Data;
 
 import javax.persistence.Entity;

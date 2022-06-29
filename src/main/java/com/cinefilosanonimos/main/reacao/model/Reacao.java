@@ -1,7 +1,6 @@
 package com.cinefilosanonimos.main.reacao.model;
 
 import com.cinefilosanonimos.main.comentario.model.ComentarioFilme;
-import com.cinefilosanonimos.main.usuario.model.Usuario;
 
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -13,6 +12,4 @@ public class Reacao {
     private Integer id;
     @ManyToOne
     private ComentarioFilme comentarioFilme;
-    @ManyToOne
-    private Usuario usuario;
 }

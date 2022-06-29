@@ -1,4 +1,4 @@
-package com.cinefilosanonimos.main.nota.service;
+package com.cinefilosanonimos.main.filme.nota.service;
 
 import com.cinefilosanonimos.main.filme.service.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ public class NotaService {
 
 
     public Double calcularNovaNota(String id, Double notaDoUsuario) {
-        var filme = filmeService.getFilmePropriaBaseDeDados(id);
+        var filme = filmeService.buscarFilmePropriaBaseDeDados(id).get();
         Double notaAtual = filme.getNota();
         Integer numeroDeVotos = filme.getNumeroDeNotasDadas();
         Double parteDeCima = ((notaAtual * numeroDeVotos) + notaDoUsuario);

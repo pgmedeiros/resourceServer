@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(value = "omdb", url = "http://www.omdbapi.com/")
-public interface OmdbClient {
+interface OmdbClient {
 
     @GetMapping("?apikey=34fa53da&t={title}")
     OmdbResponse getMovie(@PathVariable(name = "title") String id);
