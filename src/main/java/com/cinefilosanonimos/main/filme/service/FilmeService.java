@@ -48,7 +48,4 @@ public class FilmeService {
         }
     }
 
-    public void adicionarNotaPositiva(String id) {
-        var retornoBasePropria = buscarFilmePropriaBaseDeDados(id);
-    }
 }

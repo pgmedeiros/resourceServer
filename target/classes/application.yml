@@ -18,3 +18,18 @@ spring:
       resource-server:
         jwt:
           issuer-uri: http://localhost:8080
+      client:
+        registration:
+          awuser-client:
+            provider: auth
+            client-id: awuser
+            client-secret: 123456
+            authorization-grant-type: client_credentials
+            scope: users:read
+        provider:
+          auth:
+            issuer-uri: http://localhost:8080
+aw:
+  user-api:
+    url: 'http://localhost:8080'
+    encoded-credentials: 'YWRtaW5AZW1haWwuY29tOmFkbWlu'
