@@ -1,15 +1,15 @@
 package com.cinefilosanonimos.main.filme.model;
 
+import com.cinefilosanonimos.main.comentario.model.ComentarioFilme;
+import com.cinefilosanonimos.main.nota.model.NotaFilme;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,9 +24,9 @@ public class Filme {
     private String title;
     @NotNull
     private String imdbId;
-    private Double nota;
-    private Integer numeroDeNotasDadas;
-    private Integer up;
-    private Integer down;
+    @OneToMany(mappedBy = "filme")
+    private List<ComentarioFilme> comentarioFilmeList;
+    @OneToMany(mappedBy = "nota")
+    private List<NotaFilme> nota;
 
 }
